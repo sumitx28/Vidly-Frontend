@@ -1,10 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
+import MoviesTable from './components/moviesTable';
+import { getMovies, deleteMovie } from './services/fakeMovieService';
 
 function App() {
   return (
     <main className='container'>
-      <h1>Hello</h1>
+      <MoviesTable getMovies={getMovies} deleteMovie={deleteMovie} />
     </main>
   );
 }
