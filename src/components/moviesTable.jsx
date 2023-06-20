@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Like from './common/like';
 
 class MoviesTable extends Component {
   state = {
@@ -12,6 +13,15 @@ class MoviesTable extends Component {
       movies: this.props.getMovies(),
       count: this.props.getMovies().length,
     });
+  };
+
+  handleLike = (movie) => {
+    const movies = [...this.state.movies];
+    const index = movies.indexOf(movie);
+
+    movies[index].liked = !movies[index].liked;
+
+    this.setState({ movies });
   };
 
   displayMoviesCount = () => {
@@ -36,6 +46,7 @@ class MoviesTable extends Component {
             <th>Stock</th>
             <th>Rate</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +56,12 @@ class MoviesTable extends Component {
               <td>{movie.genre.name}</td>
               <td>{movie.numberInStock}</td>
               <td>{movie.dailyRentalRate}</td>
+              <td>
+                <Like
+                  liked={movie.liked}
+                  onClick={() => this.handleLike(movie)}
+                />
+              </td>
               <td>
                 <button
                   onClick={() => this.deleteMovie(movie._id)}
