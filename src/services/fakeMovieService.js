@@ -97,3 +97,8 @@ export function deleteMovie(id) {
   movies.splice(movies.indexOf(movieInDb), 1);
   return movieInDb;
 }
+
+export function toggleLike(id) {
+  let movieInDb = movies.find((m) => m._id === id);
+  movieInDb.liked = !movieInDb.liked;
+}

@@ -16,12 +16,13 @@ class MoviesTable extends Component {
   };
 
   handleLike = (movie) => {
-    const movies = [...this.state.movies];
-    const index = movies.indexOf(movie);
+    this.props.likeMovie(movie._id);
+    this.setState({
+      movies: this.props.getMovies(),
+      count: this.props.getMovies().length,
+    });
 
-    movies[index].liked = !movies[index].liked;
-
-    this.setState({ movies });
+    console.log(this.state.movies);
   };
 
   displayMoviesCount = () => {

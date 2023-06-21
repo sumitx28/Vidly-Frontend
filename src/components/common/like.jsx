@@ -22,9 +22,10 @@ const formatLike = (isLiked) => {
 };
 
 const Like = (props) => {
+  const { onClick, liked } = props;
   return (
-    <button className='btn' onClick={props.onClick}>
-      {formatLike(props.liked)}
+    <button className='btn' onClick={onClick}>
+      {formatLike(liked)}
     </button>
   );
 };
