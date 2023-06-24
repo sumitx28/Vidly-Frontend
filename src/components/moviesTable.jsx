@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import Like from './common/like';
+import Pagination from './common/pagination';
 
 class MoviesTable extends Component {
   state = {
     movies: this.props.getMovies(),
     count: this.props.getMovies().length,
+    pageSize: 4,
+    currentPage: 1,
   };
 
   deleteMovie = (id) => {
@@ -21,8 +24,11 @@ class MoviesTable extends Component {
       movies: this.props.getMovies(),
       count: this.props.getMovies().length,
     });
+  };
 
-    console.log(this.state.movies);
+  handlePageChange = (page) => {
+    console.log(page);
+    this.setState({ currentPage: page });
   };
 
   displayMoviesCount = () => {
@@ -83,6 +89,12 @@ class MoviesTable extends Component {
       <div>
         <h3>{this.displayMoviesCount()}</h3>
         {this.displayTable()}
+        <Pagination
+          pageSize={this.state.pageSize}
+          totalItems={this.state.movies.length}
+          onPageChange={this.handlePageChange}
+          currentPage={this.state.currentPage}
+        />
       </div>
     );
   }
