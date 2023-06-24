@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Like from './common/like';
 import Pagination from './common/pagination';
+import { paginate } from '../utils/paginate';
 
 class MoviesTable extends Component {
   state = {
@@ -27,12 +28,14 @@ class MoviesTable extends Component {
   };
 
   handlePageChange = (page) => {
-    console.log(page);
     this.setState({ currentPage: page });
   };
 
   displayMoviesCount = () => {
-    const { count } = this.state;
+    const { movies, currentPage, pageSize } = this.state;
+
+    const paginatedMovies = paginate(movies, currentPage, pageSize);
+    const count = paginatedMovies.length;
 
     return count === 0
       ? 'There are no movies in the database'
@@ -40,9 +43,11 @@ class MoviesTable extends Component {
   };
 
   displayTable = () => {
-    const { count } = this.state;
+    const { count, movies, currentPage, pageSize } = this.state;
 
     if (count === 0) return '';
+
+    const paginatedMovies = paginate(movies, currentPage, pageSize);
 
     return (
       <table className='table'>
@@ -57,7 +62,7 @@ class MoviesTable extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.state.movies.map((movie) => (
+          {paginatedMovies.map((movie) => (
             <tr key={movie._id}>
               <td>{movie.title}</td>
               <td>{movie.genre.name}</td>
