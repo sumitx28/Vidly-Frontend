@@ -9,9 +9,8 @@ const ListGroup = (props) => {
         {items.map((item) => (
           // eslint-disable-next-line
           <a
-            // className='list-group-item list-group-item-action'
             className={
-              item === selectedItem
+              item._id === selectedItem._id
                 ? 'list-group-item list-group-item-action active'
                 : 'list-group-item list-group-item-action'
             }
