@@ -21,8 +21,7 @@ const formatLike = (isLiked) => {
   }
 };
 
-const Like = (props) => {
-  const { onClick, liked } = props;
+const Like = ({ onClick, liked }) => {
   return (
     <button className='btn' onClick={onClick}>
       {formatLike(liked)}

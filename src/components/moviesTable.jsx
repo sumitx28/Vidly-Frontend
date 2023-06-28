@@ -1,89 +1,53 @@
 import React, { Component } from 'react';
 import Like from './common/like';
+import Table from './common/table';
 
 class MoviesTable extends Component {
-  state = {
-    movies: this.props.getMovies(),
-    count: this.props.getMovies().length,
-  };
+  columns = [
+    { path: 'title', label: 'Title' },
+    { path: 'genre.name', label: 'Genre' },
+    { path: 'numberInStock', label: 'Stock' },
+    { path: 'dailyRentalRate', label: 'Rate' },
+    {
+      key: 'like',
+      content: (movie) => (
+        <Like liked={movie.liked} onClick={() => this.props.onLike(movie)} />
+      ),
+    },
+    {
+      key: 'delete',
+      content: (movie) => (
+        <button
+          onClick={() => this.props.onDelete(movie._id)}
+          className='btn btn-sm btn-danger'
+        >
+          Delete
+        </button>
+      ),
+    },
+  ];
 
-  deleteMovie = (id) => {
-    this.props.deleteMovie(id);
-    this.setState({
-      movies: this.props.getMovies(),
-      count: this.props.getMovies().length,
-    });
-  };
-
-  handleLike = (movie) => {
-    this.props.likeMovie(movie._id);
-    this.setState({
-      movies: this.props.getMovies(),
-      count: this.props.getMovies().length,
-    });
-
-    console.log(this.state.movies);
-  };
-
-  displayMoviesCount = () => {
-    const { count } = this.state;
-
-    return count === 0
-      ? 'There are no movies in the database'
-      : `Showing ${count} movies in the database`;
-  };
-
-  displayTable = () => {
-    const { count } = this.state;
-
-    if (count === 0) return '';
-
-    return (
-      <table className='table'>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>Stock</th>
-            <th>Rate</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.state.movies.map((movie) => (
-            <tr key={movie._id}>
-              <td>{movie.title}</td>
-              <td>{movie.genre.name}</td>
-              <td>{movie.numberInStock}</td>
-              <td>{movie.dailyRentalRate}</td>
-              <td>
-                <Like
-                  liked={movie.liked}
-                  onClick={() => this.handleLike(movie)}
-                />
-              </td>
-              <td>
-                <button
-                  onClick={() => this.deleteMovie(movie._id)}
-                  className='btn btn-sm btn-danger'
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
+  raiseSort = (path) => {
+    const sortColumn = { ...this.props.sortColumn };
+    if (sortColumn.path === path) {
+      sortColumn.order = sortColumn.order === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = 'asc';
+    }
+    this.props.onSort(sortColumn);
   };
 
   render() {
+    const { movies, onSort, sortColumn } = this.props;
+
     return (
-      <div>
-        <h3>{this.displayMoviesCount()}</h3>
-        {this.displayTable()}
-      </div>
+      <Table
+        columns={this.columns}
+        data={movies}
+        onSort={onSort}
+        sortColumn={sortColumn}
+      />
     );
   }
 }

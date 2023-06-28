@@ -1,5 +1,5 @@
 import './App.css';
-import MoviesTable from './components/moviesTable';
+import Movies from './components/movies';
 import {
   getMovies,
   deleteMovie,
@@ -9,7 +9,7 @@ import {
 function App() {
   return (
     <main className='container'>
-      <MoviesTable
+      <Movies
         getMovies={getMovies}
         deleteMovie={deleteMovie}
         likeMovie={toggleLike}
