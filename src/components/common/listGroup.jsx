@@ -10,7 +10,7 @@ const ListGroup = (props) => {
           // eslint-disable-next-line
           <a
             className={
-              item._id === selectedItem._id
+              item[valueProperty] === selectedItem[valueProperty]
                 ? 'list-group-item list-group-item-action active'
                 : 'list-group-item list-group-item-action'
             }
