@@ -56,27 +56,9 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
-  displayMoviesCount = () => {
-    const { movies, currentPage, pageSize, selectedGenre } = this.state;
-
-    const filtered =
-      selectedGenre && selectedGenre._id
-        ? movies.filter((m) => m.genre._id === selectedGenre._id)
-        : movies;
-
-    const paginatedMovies = paginate(filtered, currentPage, pageSize);
-    const count = paginatedMovies.length;
-
-    return count === 0
-      ? 'There are no movies in the database'
-      : `Showing ${count} movies in the database`;
-  };
-
-  displayTable = () => {
-    const { count, movies, currentPage, pageSize, selectedGenre, sortColumn } =
+  getPagedData = () => {
+    const { movies, currentPage, pageSize, selectedGenre, sortColumn } =
       this.state;
-
-    if (count === 0) return '';
 
     const filtered =
       selectedGenre && selectedGenre._id
@@ -87,9 +69,26 @@ class Movies extends Component {
 
     const paginatedMovies = paginate(sorted, currentPage, pageSize);
 
+    return { totalCount: paginatedMovies.length, data: paginatedMovies };
+  };
+
+  displayMoviesCount = () => {
+    const { totalCount: count } = this.getPagedData();
+
+    return count === 0
+      ? 'There are no movies in the database'
+      : `Showing ${count} movies in the database`;
+  };
+
+  displayTable = () => {
+    const { totalCount: count, data: movies } = this.getPagedData();
+    const { sortColumn } = this.state;
+
+    if (count === 0) return '';
+
     return (
       <MoviesTable
-        movies={paginatedMovies}
+        movies={movies}
         sortColumn={sortColumn}
         onLike={this.handleLike}
         onDelete={this.deleteMovie}
